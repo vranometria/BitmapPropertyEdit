@@ -2,7 +2,12 @@
   "groups": [
     {
       "name": "name1",
-      "tags": [ "tag1" , "tag2" ]
+      "tags": [
+        {
+          "name": "tag1",
+          "search_keys": [ "test1", "test2" ]
+        }
+      ]
     }
   ]
 }

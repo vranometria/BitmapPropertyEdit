@@ -10,11 +10,16 @@ namespace BitmapPropertyEdit
     {
         public string Name { get; set; }
 
-        public string English { get; set; }
+        public List<string> SeartchKeys { get; set; } = new List<string>();
+
 
         public override string ToString()
         {
             return Name;
+        }
+
+        public bool hasSearchKeysThathStartsWithKey(string key) {
+            return SeartchKeys.Where(x => x.StartsWith(key)).Count() > 0;
         }
 
     }

@@ -111,7 +111,7 @@ namespace BitmapPropertyEdit
             foreach (var key in tagInfo.Groups.Keys) {
 
                 TabItem tabItem = new TabItem() { Header = key };
-                tabItem.Content = new TabPageContent(tagInfo.Groups[key] as List<string>)
+                tabItem.Content = new TabPageContent(tagInfo.Groups[key] as List<Tag>)
                 {
                     
                 };
@@ -206,7 +206,16 @@ namespace BitmapPropertyEdit
             List<dynamic> list = new List<dynamic>();
             foreach (var item in GroupTab.Items.Cast<TabItem>()) {
                 var content = item.Content as TabPageContent;
-                list.Add(new { name = item.Header, tags = content.Tags });
+
+                List<dynamic> tags = new List<dynamic>();
+
+                foreach (var t in content.Tags)
+                {
+                    var tag = new { name = t.Name, search_keys = t.SeartchKeys };
+                    tags.Add(tag);
+                }
+
+                list.Add(new { name = item.Header, tags });
             }
 
             var obj = new { groups = list };

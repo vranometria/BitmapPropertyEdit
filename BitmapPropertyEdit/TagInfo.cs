@@ -23,15 +23,21 @@ namespace BitmapPropertyEdit
         {
             dynamic json = Util.GetJson("tag.json");
 
+            // group { name:str , tags[ {},{} ] }
             foreach (var groupJson in json.groups) {
 
                 if (!groups.ContainsKey(groupJson.name))
-                    groups.Add(groupJson.name, new List<string>());
+                    groups.Add(groupJson.name, new List<Tag>());
 
-                var group = groups[groupJson.name] as List<string>;
+                var group = groups[groupJson.name] as List<Tag>;
 
+                //tags[ { name :"" , search-keys : ["","",""] } ]
                 foreach (var tagJson in groupJson.tags) {
-                    group.Add(tagJson);
+                    Tag tag = new Tag() { Name = tagJson.name };
+                    foreach (var key in tagJson.search_keys ) {
+                        tag.SeartchKeys.Add(key);
+                    }
+                    group.Add(tag);
                 }
 
                 groups[groupJson.name] = group;

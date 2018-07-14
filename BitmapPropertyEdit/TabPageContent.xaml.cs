@@ -20,7 +20,7 @@ namespace BitmapPropertyEdit
     /// </summary>
     public partial class TabPageContent : UserControl
     {
-        private List<string> tags = new List<string>();
+        private List<Tag> tags = new List<Tag>();
 
         /// <summary>
         /// チェックされたタグ名をすべて取得する
@@ -41,14 +41,14 @@ namespace BitmapPropertyEdit
         /// <summary>
         /// すべてのタグ名を取得する
         /// </summary>
-        public List<string> Tags {
+        public List<Tag> Tags {
             get
             {
     
-                List<string> list = new List<string>();
+                var list = new List<Tag>();
                 foreach (var checkbox in TagArea.Children.Cast<CheckBox>())
                 {
-                    list.Add(checkbox.Content as string);
+                    list.Add(checkbox.Tag as Tag);
                 }
                 return list;
             }
@@ -67,7 +67,7 @@ namespace BitmapPropertyEdit
         /// カスタムコンストラクタ
         /// </summary>
         /// <param name="tags"></param>
-        public TabPageContent(List<string> tags) : this() {
+        public TabPageContent(List<Tag> tags) : this() {
             this.tags = tags;
             ShowTagAll();
         }
@@ -77,7 +77,7 @@ namespace BitmapPropertyEdit
         /// </summary>
         private void ShowTagAll() {
             TagArea.Children.Clear();
-            foreach (var tag in tags.OrderBy(x => x)) {
+            foreach (var tag in tags.OrderBy(x => x.Name)) {
                 ShowTag(tag);
             }
         }
@@ -86,8 +86,8 @@ namespace BitmapPropertyEdit
         /// タグのチェックボックスを表示する
         /// </summary>
         /// <param name="text"></param>
-        private void ShowTag(string text) {
-            CheckBox checkBox = new CheckBox() { Content = text, Tag = text };
+        private void ShowTag(Tag tag) {
+            CheckBox checkBox = new CheckBox() { Content = tag.Name, Tag = tag };
             TagArea.Children.Add(checkBox);
         }
 
@@ -98,7 +98,9 @@ namespace BitmapPropertyEdit
         private void Search(string text) {
             foreach (var checkbox in TagArea.Children.Cast<CheckBox>())
             {
-                checkbox.Visibility = checkbox.Content.ToString().StartsWith(text) ? Visibility.Visible : Visibility.Hidden;
+                checkbox.Visibility =
+                    checkbox.Content.ToString().StartsWith(text) || (checkbox.Tag as Tag).hasSearchKeysThathStartsWithKey(text)
+                    ? Visibility.Visible : Visibility.Hidden;
             }
         }
 
@@ -108,11 +110,12 @@ namespace BitmapPropertyEdit
         /// <param name="text"></param>
         private void AddTag(string text) {
 
-            if (tags.Contains(text.Trim()))
+            if (tags.Select(x => x.Name).Contains(text.Trim()))
                 return;
 
-            tags.Add(text);
-            ShowTag(text);
+            var tag = new Tag() { Name = text };
+            tags.Add(tag);
+            ShowTag(tag);
           }
 
         /// <summary>
