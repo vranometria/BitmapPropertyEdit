@@ -1,0 +1,8 @@
+﻿{
+  "groups": [
+    {
+      "name": "name1",
+      "tags": [ "tag1" , "tag2" ]
+    }
+  ]
+}
