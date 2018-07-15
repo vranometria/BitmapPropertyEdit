@@ -60,6 +60,10 @@ namespace BitmapPropertyEdit
 
         BitmapWarapper warapper;
 
+
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
         public MainWindow()
         {
             InitializeComponent();
@@ -81,6 +85,24 @@ namespace BitmapPropertyEdit
 
         }
 
+        /// <summary>
+        /// 選択タグをすべて取得する
+        /// </summary>
+        /// <returns></returns>
+        private List<string> GetCheckedTags()
+        {
+            List<string> checkedTags = new List<string>();
+            foreach (var tabitem in GroupTab.Items.Cast<TabItem>())
+            {
+                var tab = tabitem.Content as TabPageContent;
+                checkedTags.AddRange(tab.CheckedItems);
+            }
+            return checkedTags;
+        }
+
+        /// <summary>
+        /// タグの登録
+        /// </summary>
         private void registerTag()
         {
             var tags = GetCheckedTags();
@@ -101,6 +123,10 @@ namespace BitmapPropertyEdit
             Next.IsEnabled = files.Count > 0;
         }
 
+        /// <summary>
+        /// 前処理
+        /// データ読んだり初期表示したり
+        /// </summary>
         private void Prepare()
         {
             Directory.Delete(WorkingDirectory,true);
@@ -110,8 +136,18 @@ namespace BitmapPropertyEdit
 
             foreach (var key in tagInfo.Groups.Keys) {
 
-                TabItem tabItem = new TabItem() { Header = key };
-                tabItem.Content = new TabPageContent(tagInfo.Groups[key] as List<Tag>)
+                TabItem tabItem = new TabItem()
+                {
+                    Header = key,
+                };
+                Grid grid = new Grid()
+                {
+                    HorizontalAlignment = HorizontalAlignment.Stretch,
+                    VerticalAlignment = VerticalAlignment.Stretch,
+                    Background = new SolidColorBrush(Colors.Black)
+                };
+                var content = new TabPageContent(tagInfo.Groups[key] as List<Tag>);
+                tabItem.Content = content;
                 {
                     
                 };
@@ -137,14 +173,7 @@ namespace BitmapPropertyEdit
             }
         }
 
-        private List<string> GetCheckedTags() {
-            List<string> checkedTags = new List<string>();
-            foreach (var tabitem in GroupTab.Items.Cast<TabItem>()) {
-                var tab = tabitem.Content as TabPageContent;
-                checkedTags.AddRange(tab.CheckedItems);
-            }
-            return checkedTags;
-        }
+
 
         private void Window_Drop(object sender, DragEventArgs e)
         {

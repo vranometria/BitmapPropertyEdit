@@ -30,7 +30,7 @@ namespace BitmapPropertyEdit
             get
             {
                 List<string> list = new List<string>();
-                foreach (var checkbox in TagArea.Children.Cast<CheckBox>().Where(x => x.IsChecked == true))
+                foreach (var checkbox in TagArea.Items.Cast<CheckBox>().Where(x => x.IsChecked == true))
                 {
                     list.Add(checkbox.Content as string);
                 }
@@ -46,7 +46,7 @@ namespace BitmapPropertyEdit
             {
     
                 var list = new List<Tag>();
-                foreach (var checkbox in TagArea.Children.Cast<CheckBox>())
+                foreach (var checkbox in TagArea.Items.Cast<CheckBox>())
                 {
                     list.Add(checkbox.Tag as Tag);
                 }
@@ -76,7 +76,7 @@ namespace BitmapPropertyEdit
         /// タグをすべて表示する
         /// </summary>
         private void ShowTagAll() {
-            TagArea.Children.Clear();
+            TagArea.Items.Clear();
             foreach (var tag in tags.OrderBy(x => x.Name)) {
                 ShowTag(tag);
             }
@@ -88,7 +88,7 @@ namespace BitmapPropertyEdit
         /// <param name="text"></param>
         private void ShowTag(Tag tag) {
             CheckBox checkBox = new CheckBox() { Content = tag.Name, Tag = tag };
-            TagArea.Children.Add(checkBox);
+            TagArea.Items.Add(checkBox);
         }
 
         /// <summary>
@@ -96,7 +96,7 @@ namespace BitmapPropertyEdit
         /// </summary>
         /// <param name="text"></param>
         private void Search(string text) {
-            foreach (var checkbox in TagArea.Children.Cast<CheckBox>())
+            foreach (var checkbox in TagArea.Items.Cast<CheckBox>())
             {
                 checkbox.Visibility =
                     checkbox.Content.ToString().StartsWith(text) || (checkbox.Tag as Tag).hasSearchKeysThathStartsWithKey(text)
@@ -122,7 +122,7 @@ namespace BitmapPropertyEdit
         /// すべてのタグからチェックを外す
         /// </summary>
         public void UncheckAllTags() {
-            foreach (var checkbox in TagArea.Children.Cast<CheckBox>())
+            foreach (var checkbox in TagArea.Items.Cast<CheckBox>())
                 checkbox.IsChecked = false;
         }
 
